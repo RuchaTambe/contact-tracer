@@ -9,19 +9,23 @@ public class BallScript : MonoBehaviour
     public float SpeedY = 7;
     private Vector2 InitialLocation;
     public bool isOriginalVirus;
+    public float acceleration = 3.0f;
     // Use this for initialization
     void Start()
     {
         InitialLocation = transform.position;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         ballCollider.GetComponent<CircleCollider2D>();
+        // This is a work around to get constant velocity we need to revisit this later
+        GiveBoostIfMovingOnXorYAxis();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (GameManager.CurrentGameState == GameManager.GameState.Playing){
-            GiveBoostIfMovingOnXorYAxis();
+            // This is a work around to get constant velocity we need to revisit this later
+            //GiveBoostIfMovingOnXorYAxis();
         }
     }
 
@@ -31,14 +35,14 @@ public class BallScript : MonoBehaviour
         {
             //left or right? 
             bool right = Random.Range(-1.0f, 1.0f) >= 0;
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(right ? 5.0f : -5.0f, 0), ForceMode2D.Impulse);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(right ? acceleration : -acceleration, 0), ForceMode2D.Impulse);
         }
 
         if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y - 0.2f) <= 0.2f)
         {
             //up or down? 
             bool down = Random.Range(-1.0f, 1.0f) >= 0;
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, down ? 5.0f : -5.0f), ForceMode2D.Impulse);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, down ? acceleration : -acceleration), ForceMode2D.Impulse);
         }
     }
 
