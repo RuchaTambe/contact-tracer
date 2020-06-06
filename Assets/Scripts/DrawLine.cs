@@ -72,13 +72,16 @@ public class DrawLine : MonoBehaviour
     // the following function is used to add new points to the line as the user moves the fingers
     void UpdateLine(Vector2 newFingerPosition)
     {
-        fingerPositions.Add(newFingerPosition);
-        
-        // we update the line renderer
-        lineRenderer.positionCount++;
-        lineRenderer.SetPosition(lineRenderer.positionCount - 1,newFingerPosition);
-        
-        // we also update the edge collider
-        edgeCollider2D.points = fingerPositions.ToArray();
+    	if(fingerPositions.Count <10)
+        {
+            fingerPositions.Add(newFingerPosition);
+            
+            // we update the line renderer
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1,newFingerPosition);
+            
+            // we also update the edge collider
+            edgeCollider2D.points = fingerPositions.ToArray();
+        }
     }
 }
